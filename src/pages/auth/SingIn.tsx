@@ -6,36 +6,34 @@ import { Form, Formik } from "formik";
 import { useAppDispatch } from "../../hooks"
 import { TextInput } from "../../components/forms";
 import { logInSchema } from "./schemas/auth.schemas";
-import { signInThunk } from "../../store/auth/thunks";
-
-interface SingInForm {
-  email: string;
-  password: string;
-}
+import { signInThunk } from "../../store/auth/auth-thunks";
+import { LoginInput } from "../../types";
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
-  const initialValues: SingInForm = {
-    email: '', 
+  const initialValues: LoginInput = {
+    email: '',
     password: ''
   };
 
-  const onFormSubmit = (data: SingInForm) => {
-    dispatch(signInThunk(data))
-    navigate('/')
+  const onFormSubmit = (data: LoginInput) => {
+    dispatch(signInThunk(data));
+    navigate('/');
   }
 
   return (
-    <Container maxWidth='xl' sx={{ 
-      display:'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: '40px 0',
-    
-    }}>
-      <Typography variant='h3' sx={{ mb: '2rem'}}>Sign In</Typography>
+    <Container 
+      maxWidth='xl' 
+      sx={{ 
+        display:'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '40px 0',
+      }}
+    >
+      <Typography variant='h3' sx={{ mb: '2rem'}} data-testid='SignIn-title'>Sign In</Typography>
 
       <Formik
         initialValues={initialValues}

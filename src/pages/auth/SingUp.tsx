@@ -3,31 +3,26 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
 
-// import { useAppDispatch } from "../../hooks"
-// import { testLogin } from "../../store/auth";
+import { signUpSchema } from "./schemas/auth.schemas";
 import { TextInput } from "../../components/forms";
-import { logInSchema, signUpSchema } from "./schemas/auth.schemas";
-
-interface SingUpForm {
-  email: string;
-  password: string;
-  username: string;
-}
+import { RegistrationInput } from "../../types";
+import { useAppDispatch } from "../../hooks"
+import { signUpThunk } from "../../store/auth/auth-thunks";
 
 const SignUp = () => {
-  // const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   
-  const initialValues: SingUpForm = {
+  const initialValues: RegistrationInput = {
     email: '', 
     password: '',
     username: ''
   };
 
-  // const testHere = () => {
-  //   dispatch(testLogin())
-  //   navigate('/')
-  // }
+  const onFormSubmit = (data: RegistrationInput) => {
+    dispatch(signUpThunk(data));
+    navigate('/sign-in');
+  }
 
   return (
     <Container maxWidth='xl' sx={{ 
@@ -44,9 +39,7 @@ const SignUp = () => {
         validationSchema={Yup.object({...signUpSchema})}
         onSubmit={(values, actions) => {
           actions.setSubmitting(true);
-
-          console.log({ values, actions });
-
+          onFormSubmit(values)
           actions.setSubmitting(false);
         }}
       >

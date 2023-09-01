@@ -1,6 +1,6 @@
 export interface UserFromAuth {
   _id: string;
-  userName: string;
+  username: string;
   email: string;
   refreshToken: string;
 }
@@ -16,7 +16,7 @@ export interface LoginInput {
 }
 
 export interface RegistrationInput extends LoginInput {
-  userName: string;
+  username: string;
 }
 
 export interface RefreshTokenResponse {

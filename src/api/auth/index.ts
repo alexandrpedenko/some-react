@@ -1,22 +1,36 @@
-import { AxiosResponse } from "axios";
-import apiAxios from "../axios";
-import { AuthResponse, LoginInput, RegistrationInput } from "../../types";
+import { apiAxios, apiAxiosRefresh } from "../axios";
+import { AuthResponse, LoginInput, RefreshTokenResponse, RegistrationInput, UserFromAuth } from "../../types";
 
-export const login = ({
+const authPath = 'auth';
+
+export const login = async ({
   email,
   password
-}: LoginInput): Promise<AxiosResponse<AuthResponse>>  => {
-  return apiAxios.post<AuthResponse>('/login', { email, password });
+}: LoginInput): Promise<AuthResponse>  => {
+  const { data } = await apiAxios.post<AuthResponse>(`/${authPath}/login`, { email, password });
+  return data;
 }
 
-export const registration = ({
+export const signup = async ({
   email,
   password,
-  userName,
-}: RegistrationInput): Promise<AxiosResponse<AuthResponse>> => {
-  return apiAxios.post<AuthResponse>('/registration', { email, password, userName });
+  username,
+}: RegistrationInput): Promise<AuthResponse> => {
+  const { data } = await apiAxios.post<AuthResponse>(`/${authPath}/signup`, { email, password, username });
+  return data;
 }
 
-export const logout = (): Promise<void> => {
-  return apiAxios.post('/logout');
+export const logout = async (): Promise<boolean> => {
+  const { data } = await apiAxios.post<boolean>(`/${authPath}/logout`);
+  return data;
+}
+
+export const getAuthUser = async (): Promise<UserFromAuth> => {
+  const { data } = await apiAxiosRefresh.get<UserFromAuth>(`/${authPath}/user-profile`);
+  return data;
+}
+
+export const refreshToken = async (): Promise<RefreshTokenResponse> => {
+  const { data } = await apiAxiosRefresh.get<RefreshTokenResponse>(`/${authPath}/refresh`);
+  return data;
 }

@@ -1,11 +1,12 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import logger from 'redux-logger'
 import auth from "./auth";
-
+import alert from "./alert";
 
 export const store = configureStore({
   reducer: {
-    auth
+    auth,
+    alert
   },
   middleware: (getDefaultMiddleware) => {
     const middleware = getDefaultMiddleware();

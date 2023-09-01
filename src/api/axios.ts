@@ -1,6 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
+import { localStorageService } from '../services';
 
-export const API_URL = 'http://localhost:3000/api';
+export const API_URL = '/api';
 
 const apiAxios = axios.create({
   withCredentials: true,
@@ -9,17 +10,31 @@ const apiAxios = axios.create({
 
 apiAxios.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    const data = localStorageService.get<{token: string}>('token')
+    if (data) {
+      config.headers.Authorization = `Bearer ${data.token}`;
+    }
 
     return config;
   }
 );
 
-// NOTE: Intercept response
-// apiAxios.interceptors.response.use(
-//   (response: AxiosResponse) => {
-//     return response;
-//   }
-// );
+// NOTE: Axios instance for refresh request
+const apiAxiosRefresh = axios.create({
+  withCredentials: true,
+  baseURL: API_URL,
+});
 
-export default apiAxios;
+apiAxiosRefresh.interceptors.request.use(
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    const data = localStorageService.get<{refreshToken: string}>('refreshToken')
+    config.headers.Authorization = `Bearer ${data.refreshToken}`;
+
+    return config;
+  }
+);
+
+export {
+  apiAxios,
+  apiAxiosRefresh
+};

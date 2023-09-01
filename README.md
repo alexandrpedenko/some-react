@@ -1,4 +1,13 @@
-# React + TypeScript + Vite
+# Some Regular React Project
+
+- User Auth basic functionality
+
+
+## Stack: React, TypeScript, Redux Toolkit, Formik, Yup, React Query.
+
+
+
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
